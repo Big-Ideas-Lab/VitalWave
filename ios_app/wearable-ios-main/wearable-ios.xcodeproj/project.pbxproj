@@ -84,6 +84,17 @@
 		26F28D852B05548F00082572 /* AsyncBluetooth in Frameworks */ = {isa = PBXBuildFile; productRef = 26F28D842B05548F00082572 /* AsyncBluetooth */; };
 		26FEE4F22BC89A3C0015CCF3 /* Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 26FEE4F12BC89A3C0015CCF3 /* Config.xcconfig */; };
 		26FEE4F72BC8B1B50015CCF3 /* LoginWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26FEE4F62BC8B1B40015CCF3 /* LoginWebView.swift */; };
+		5A37E35B3075699B009AD94D /* v0Command.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A37E35A30756992009AD94D /* v0Command.swift */; };
+		5A37E35D307569D8009AD94D /* V0Status.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A37E35C307569D0009AD94D /* V0Status.swift */; };
+		5A37E36030756C92009AD94D /* V0Session.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A37E35F30756C92009AD94D /* V0Session.swift */; };
+		5A37E36130756C92009AD94D /* V0RecordingSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A37E35E30756C92009AD94D /* V0RecordingSection.swift */; };
+		5A37E36330757098009AD94D /* V0LivePlot.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A37E36230757098009AD94D /* V0LivePlot.swift */; };
+		5A37E36530799194009AD94D /* RecordingStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A37E3643079917E009AD94D /* RecordingStore.swift */; };
+		5A37E367307991C2009AD94D /* RecordingViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A37E366307991AF009AD94D /* RecordingViews.swift */; };
+		5A37E369307D5DD9009AD94D /* WatchMarkers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A37E368307D5DCB009AD94D /* WatchMarkers.swift */; };
+		5A37E36B307D6BB1009AD94D /* RecordingNotes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A37E36A307D6BAC009AD94D /* RecordingNotes.swift */; };
+		5A37E36D307D6CEF009AD94D /* EventsNotesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A37E36C307D6BE6009AD94D /* EventsNotesView.swift */; };
+		5A37E36F30801ECF009AD94D /* SessionSyncSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A37E36E30801EC8009AD94D /* SessionSyncSection.swift */; };
 		645514602AFD5F3800775DE3 /* RadioButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6455145F2AFD5F3800775DE3 /* RadioButtonStyle.swift */; };
 		64B963772ACBD66F00EDCBD7 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64B963762ACBD66F00EDCBD7 /* SettingsView.swift */; };
 		64B963792ACBD6C300EDCBD7 /* SelfReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64B963782ACBD6C300EDCBD7 /* SelfReportView.swift */; };
@@ -171,6 +182,17 @@
 		26FEE4F12BC89A3C0015CCF3 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		26FEE4F32BC89B340015CCF3 /* version.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = version.sh; sourceTree = "<group>"; };
 		26FEE4F62BC8B1B40015CCF3 /* LoginWebView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginWebView.swift; sourceTree = "<group>"; };
+		5A37E35A30756992009AD94D /* v0Command.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = v0Command.swift; sourceTree = "<group>"; };
+		5A37E35C307569D0009AD94D /* V0Status.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V0Status.swift; sourceTree = "<group>"; };
+		5A37E35E30756C92009AD94D /* V0RecordingSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V0RecordingSection.swift; sourceTree = "<group>"; };
+		5A37E35F30756C92009AD94D /* V0Session.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V0Session.swift; sourceTree = "<group>"; };
+		5A37E36230757098009AD94D /* V0LivePlot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = V0LivePlot.swift; sourceTree = "<group>"; };
+		5A37E3643079917E009AD94D /* RecordingStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingStore.swift; sourceTree = "<group>"; };
+		5A37E366307991AF009AD94D /* RecordingViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingViews.swift; sourceTree = "<group>"; };
+		5A37E368307D5DCB009AD94D /* WatchMarkers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatchMarkers.swift; sourceTree = "<group>"; };
+		5A37E36A307D6BAC009AD94D /* RecordingNotes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingNotes.swift; sourceTree = "<group>"; };
+		5A37E36C307D6BE6009AD94D /* EventsNotesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsNotesView.swift; sourceTree = "<group>"; };
+		5A37E36E30801EC8009AD94D /* SessionSyncSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionSyncSection.swift; sourceTree = "<group>"; };
 		6455145F2AFD5F3800775DE3 /* RadioButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButtonStyle.swift; sourceTree = "<group>"; };
 		64B963762ACBD66F00EDCBD7 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		64B963782ACBD6C300EDCBD7 /* SelfReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelfReportView.swift; sourceTree = "<group>"; };
@@ -254,6 +276,7 @@
 		2622391A2BE070D700CCE954 /* Live Data */ = {
 			isa = PBXGroup;
 			children = (
+				5A37E36E30801EC8009AD94D /* SessionSyncSection.swift */,
 				260480392CBACD330060A4D2 /* HeartRate */,
 				26EB8E0C2C9B4AAD00B873BB /* LiveDataRowLabel.swift */,
 				26BEC1582BAF623900B5E35D /* LiveDataViewSingle.swift */,
@@ -280,6 +303,9 @@
 		266358ED2B84ED86005C5C18 /* FileManagement */ = {
 			isa = PBXGroup;
 			children = (
+				5A37E36A307D6BAC009AD94D /* RecordingNotes.swift */,
+				5A37E366307991AF009AD94D /* RecordingViews.swift */,
+				5A37E3643079917E009AD94D /* RecordingStore.swift */,
 				266358EE2B84EDA1005C5C18 /* LocalDeviceDataManagerService.swift */,
 			);
 			path = FileManagement;
@@ -319,6 +345,9 @@
 		26809ED32AD5FB3700A89803 /* Bluetooth */ = {
 			isa = PBXGroup;
 			children = (
+				5A37E368307D5DCB009AD94D /* WatchMarkers.swift */,
+				5A37E35C307569D0009AD94D /* V0Status.swift */,
+				5A37E35A30756992009AD94D /* v0Command.swift */,
 				260A726D2AE1E7B1005FC26B /* DataTransferModels */,
 				26809ED42AD5FB4100A89803 /* CBUUIDs.swift */,
 				26F28D7D2B0534D300082572 /* BLEModel.swift */,
@@ -327,6 +356,9 @@
 				2661E53E2CE187D3008BCD96 /* PairedPeripheralManager.swift */,
 				26F28D7F2B05490E00082572 /* PairedPeripheral.swift */,
 				26BABA482BD871D9004193DF /* BluetoothExtensions.swift */,
+				5A37E35E30756C92009AD94D /* V0RecordingSection.swift */,
+				5A37E35F30756C92009AD94D /* V0Session.swift */,
+				5A37E36230757098009AD94D /* V0LivePlot.swift */,
 			);
 			path = Bluetooth;
 			sourceTree = "<group>";
@@ -432,6 +464,7 @@
 		64B963752ACBD63E00EDCBD7 /* Interfaces */ = {
 			isa = PBXGroup;
 			children = (
+				5A37E36C307D6BE6009AD94D /* EventsNotesView.swift */,
 				2627856E2B043F810077E3FC /* ResuableComponents */,
 				26D530962AD8875E00E4CAFE /* AuthDeciderView.swift */,
 				26FEE4F62BC8B1B40015CCF3 /* LoginWebView.swift */,
@@ -553,13 +586,18 @@
 				26B6E85C2BD315000041DEEB /* CookieMonsterViewController.swift in Sources */,
 				2683C3242AE2CBEA00C59DFF /* HighFrequencyData.swift in Sources */,
 				266D038B2CAF5659003E6E44 /* LivePPGData.swift in Sources */,
+				5A37E35B3075699B009AD94D /* v0Command.swift in Sources */,
 				266358EF2B84EDA1005C5C18 /* LocalDeviceDataManagerService.swift in Sources */,
+				5A37E369307D5DD9009AD94D /* WatchMarkers.swift in Sources */,
 				26D530952AD8800300E4CAFE /* MainMenu.swift in Sources */,
 				269E8F212C8CF830001B68D7 /* WaypointsListView.swift in Sources */,
 				2604803B2CBAE2EA0060A4D2 /* HeartRateViewModel.swift in Sources */,
 				26EC49862C9B659B001F1765 /* HeartRateView.swift in Sources */,
 				64B963792ACBD6C300EDCBD7 /* SelfReportView.swift in Sources */,
 				6A0395E52AD4AF410089EBC1 /* MainTabView.swift in Sources */,
+				5A37E36030756C92009AD94D /* V0Session.swift in Sources */,
+				5A37E36530799194009AD94D /* RecordingStore.swift in Sources */,
+				5A37E36130756C92009AD94D /* V0RecordingSection.swift in Sources */,
 				26EB8E0D2C9B4AAF00B873BB /* LiveDataRowLabel.swift in Sources */,
 				26E189762BD2F24100F6F6E1 /* CookieMonster.swift in Sources */,
 				26BABA492BD871D9004193DF /* BluetoothExtensions.swift in Sources */,
@@ -571,6 +609,8 @@
 				269CF49D2AB8D9A900418F46 /* HomeView.swift in Sources */,
 				26E495672CAB17770030AF2C /* NumericalRow.swift in Sources */,
 				26DF8BA02ACF724B0077F316 /* FirebaseDeviceDataUploaderService.swift in Sources */,
+				5A37E36330757098009AD94D /* V0LivePlot.swift in Sources */,
+				5A37E36B307D6BB1009AD94D /* RecordingNotes.swift in Sources */,
 				262785722B0442820077E3FC /* AddDeviceView.swift in Sources */,
 				26DEEF362B8576C100A7DEB9 /* LocalDataDayBrowser.swift in Sources */,
 				64B9637D2ACBD6FB00EDCBD7 /* HelpView.swift in Sources */,
@@ -580,6 +620,7 @@
 				262057F32B60864A00FCDEA6 /* PairedDeviceRow.swift in Sources */,
 				26EC49892C9C76A4001F1765 /* HeartRateAnalysis.swift in Sources */,
 				26FEE4F72BC8B1B50015CCF3 /* LoginWebView.swift in Sources */,
+				5A37E36F30801ECF009AD94D /* SessionSyncSection.swift in Sources */,
 				26834A742CB8B1B3003D713E /* FileHandleTest.swift in Sources */,
 				269CF49B2AB8D9A900418F46 /* WearableApp.swift in Sources */,
 				2640B69F2ABB2D9E002E1DD2 /* BluetoothTestView.swift in Sources */,
@@ -601,6 +642,7 @@
 				26F28D802B05490E00082572 /* PairedPeripheral.swift in Sources */,
 				26C250912CDDA55E005FC885 /* Esgalhado.swift in Sources */,
 				26EF25B32CD1916500BF4CE0 /* Notifications.extensions.swift in Sources */,
+				5A37E35D307569D8009AD94D /* V0Status.swift in Sources */,
 				2694B89F2B0BB56900FB2FA9 /* DeviceDataBrowser.swift in Sources */,
 				26F28D7E2B0534D300082572 /* BLEModel.swift in Sources */,
 				26986D612B211455009B4A73 /* LiveDataView.swift in Sources */,
@@ -614,10 +656,12 @@
 				2672ED892B16B7E200D70BB8 /* TextFieldForm.swift in Sources */,
 				26DEEF412B858B2600A7DEB9 /* IncomingDataBuffer.swift in Sources */,
 				64C302B32AE885F600E8B0A3 /* ReportUploaderService.swift in Sources */,
+				5A37E367307991C2009AD94D /* RecordingViews.swift in Sources */,
 				645514602AFD5F3800775DE3 /* RadioButtonStyle.swift in Sources */,
 				6AD31FCE2AD48CEB00043ACA /* AuthViewModel.swift in Sources */,
 				26A1B50C2CA613F700DB5C26 /* DisplayHeartRate.swift in Sources */,
 				2640B6A12ABB639F002E1DD2 /* BluetoothTestPeripheralView.swift in Sources */,
+				5A37E36D307D6CEF009AD94D /* EventsNotesView.swift in Sources */,
 				2604803D2CBAEBDB0060A4D2 /* HeartRateTestingUtils.swift in Sources */,
 				26DEEF3A2B857A7C00A7DEB9 /* CloudDataCSVRow.swift in Sources */,
 				260A72712AE1E7E6005FC26B /* Data.extensions.swift in Sources */,
@@ -759,11 +803,12 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "$(BUILD_NUMBER)";
-				DEVELOPMENT_TEAM = N5ST449PX2;
+				DEVELOPMENT_TEAM = U95H34Y8T2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "wearable-ios/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Wearable;
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Required to use app";
 				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "This app would like to use bluetooth";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -776,7 +821,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = "$(VERSION)";
-				PRODUCT_BUNDLE_IDENTIFIER = "edu.duke.pratt.dunn.wearable-ios";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jadechng.vitalwave;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -795,11 +840,12 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = "$(BUILD_NUMBER)";
-				DEVELOPMENT_TEAM = N5ST449PX2;
+				DEVELOPMENT_TEAM = U95H34Y8T2;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "wearable-ios/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = Wearable;
+				INFOPLIST_KEY_LSSupportsOpeningDocumentsInPlace = YES;
 				INFOPLIST_KEY_NSBluetoothAlwaysUsageDescription = "Required to use app";
 				INFOPLIST_KEY_NSBluetoothPeripheralUsageDescription = "This app would like to use bluetooth";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -812,7 +858,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = "$(VERSION)";
-				PRODUCT_BUNDLE_IDENTIFIER = "edu.duke.pratt.dunn.wearable-ios";
+				PRODUCT_BUNDLE_IDENTIFIER = com.jadechng.vitalwave;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;

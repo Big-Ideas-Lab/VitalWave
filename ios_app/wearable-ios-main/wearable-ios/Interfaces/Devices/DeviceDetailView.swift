@@ -3,11 +3,10 @@
 //  wearable-ios
 //
 //  Created by Luke Redmore on 11/20/23.
+//  Updated by Jade Chng 10/06/26
 //
 
 import SwiftUI
-
-
 
 
 /** This view will show the details and settings for any paired peripheral. For now, it only shows a NavigationLink to browse all data collected by the device */
@@ -18,6 +17,12 @@ struct DeviceDetailView: View {
     
     var body: some View {
         List{
+            if let uid = authModel.user?.uid {
+                WatchButtonConfiguration(
+                    userID: uid,
+                    watchID: deviceDetails.id
+                )
+            }
             Section {
                 NavigationLink {
                     TextFieldForm(
@@ -54,8 +59,8 @@ struct DeviceDetailView: View {
             }
             Section {
                             HStack {
-                                var megabyts = $deviceDetails.counter.wrappedValue/1000000
-                                Text("Size: \($deviceDetails.counter) MB")
+                                
+                                Text(verbatim: "Size: \(deviceDetails.counter / 1_000_000) MB")
                                 Spacer()
                                 Button("Increment") {
                                     
