@@ -3,6 +3,7 @@
 //  wearable-ios
 //
 //  Created by Luke Redmore on 11/15/23.
+//  Updated by Jade Chng on 10/6/226
 //
 
 import SwiftUI
@@ -20,6 +21,7 @@ import os
     
     /** No use other than holding the pointer to cancel the central.eventPublisher subscriptions in `init` */
     internal var cancellables = Set<AnyCancellable>()
+    @Published var v0Sessions: [String: V0Session] = [:]
     
     /** Stateful value holding the status of the BLE antenna. Could be useful for displaying messages like "Your bluetooth is off!" */
     @Published private(set) var bleState: CBManagerState = .unknown

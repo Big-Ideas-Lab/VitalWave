@@ -56,13 +56,13 @@
 
     <script>
         const firebaseConfig = {
-            apiKey: "",
-            authDomain: "",
-            databaseURL: "",
-            projectId: "",
-            storageBucket: "",
-            messagingSenderId: "",
-            appId: ""
+            apiKey: "AIzaSyDsd8grZqVOJyUSxtxBYgf52B7uoiT1mSw",
+            authDomain: "vitalwave-test.firebaseapp.com",
+            databaseURL: "vitalwave-test",
+            projectId: "vitalwave-test",
+            storageBucket: "vitalwave-test.firebasestorage.app",
+            messagingSenderId: "14521597290",
+            appId: "G-K1E1HJJKKB"
         };
 
         const app = firebase.initializeApp(firebaseConfig);
@@ -72,13 +72,13 @@
             const email = document.getElementById('exampleInputEmail1').value;
             const password = document.getElementById('exampleInputPassword1').value;
 
-            console.log('Attempting login with Email:', email, 'Password:', password);
+            // console.log('Attempting login with Email:', email, 'Password:', password);
 
             // Inside loginUser function
             firebase.auth().signInWithEmailAndPassword(email, password)
                 .then((userCredential) => {
                     userCredential.user.getIdToken().then((idToken) => {
-                        console.log('Generated ID Token:', idToken);
+                        //console.log('Generated ID Token:', idToken);
                         // Send token to your backend via HTTP
                         fetch('/attempt-login', {
                             method: 'POST',

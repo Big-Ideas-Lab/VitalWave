@@ -6,14 +6,19 @@ import pandas as pd
 from datetime import datetime, timedelta
 import time
 import redis
+from pathlib import Path
+
 
 start_time = time.time()
 
 # Path to private key json file
-cred = credentials.Certificate("bc-infection-detection-firebase-adminsdk-x954y-aed6e182a3.json")
+# change to your path to firestore json key
+key_path = Path.home() / "Documents" / "VitalWaveSecrets" / "firebase-admin.json"
 
-# Initialize the Firebase app and Firestore db
-firebase_admin.initialize_app(cred)
+if not firebase_admin._apps:
+    cred = credentials.Certificate(str(key_path))
+    firebase_admin.initialize_app(cred)
+
 db = firestore.client()
 data_collection_name = 'demo_data'
 
@@ -57,7 +62,6 @@ def generate_date_range(center_date, days_before, days_after):
 # main function to get data (3 dataframes)
 def get_data(user_id, watch_id, daydate, days_range=10):
     print("Date Queried for:", daydate)
-    watch_id = 'E4C41215-B262-3FA3-9658-0BC2276E59E2' ## CHANGE THIS
     day_data = []
     minute_data = []
     hour_data = []
