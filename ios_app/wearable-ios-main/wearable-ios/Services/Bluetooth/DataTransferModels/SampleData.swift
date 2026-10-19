@@ -3,6 +3,7 @@
 //  wearable-ios
 //
 //  Created by Luke Redmore on 2/20/24.
+//  Updated by Jade Chng on 10/06/2026
 //
 
 import SwiftUI
@@ -174,5 +175,44 @@ public class SampleData: CustomStringConvertible {
         }
         toRet += ")"
         return toRet
+    }
+}
+
+
+// Maps v0 frames into the original UI's model without its legacy sentinel rules.
+// Keep this extension in SampleData.swift so it can set private(set) fields.
+extension SampleData {
+    static func fromV0Frame(_ b: [UInt8]) -> SampleData? {
+        guard b.count == 20, b[0] == 3 else { return nil }
+        func u16(_ i: Int) -> UInt16 { UInt16(b[i]) | UInt16(b[i + 1]) << 8 }
+        guard u16(18) == 1 else { return nil }
+        let x = Float32(Int16(bitPattern: u16(12)))
+        let y = Float32(Int16(bitPattern: u16(14)))
+        let z = Float32(Int16(bitPattern: u16(16)))
+        let sample = SampleData()
+        switch b[1] {
+        case 1:
+            sample.acc_x = x * 0.000061
+            sample.acc_y = y * 0.000061
+            sample.acc_z = z * 0.000061
+        case 2:
+            sample.gyro_x = x * 0.00875
+            sample.gyro_y = y * 0.00875
+            sample.gyro_z = z * 0.00875
+        case 3:
+            sample.air_temp = x / 100
+            sample.humid = y / 100
+        case 4...7:
+            guard u16(14) <= 7, u16(16) == 0 else { return nil }
+            let raw = UInt32(u16(12)) | UInt32(u16(14)) << 16
+            switch b[1] {
+            case 4: sample.ppg_ir = raw
+            case 5: sample.ppg_r = raw
+            case 6: sample.ppg_g = raw
+            default: sample.ppg_b = raw
+            }
+        default: return nil
+        }
+        return sample
     }
 }

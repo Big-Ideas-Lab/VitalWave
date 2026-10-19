@@ -39,7 +39,7 @@ struct MenuTestView: View {
                         Label("Settings", systemImage: "gearshape.fill")
                     }
                     NavigationLink {
-                        HomeView()
+                        MainTabView()
                     } label: {
                         Label("Home", systemImage: "gearshape.fill")
                     }

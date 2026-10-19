@@ -3,80 +3,131 @@
 //  wearable-ios
 //
 //  Created by Luke Redmore on 11/16/23.
+//  Updated by Jade Chng on 10/06/26
 //
 
+//import Foundation
+//import Combine
+//@preconcurrency import AsyncBluetooth
+//
+//extension BLEModel {
+//    internal func onPeripheralConnect(_ peripheral: Peripheral) {
+//        Task {
+//            do {
+//                // Listen before enabling notifications.
+//                peripheral.characteristicValueUpdatedPublisher
+//                    .filter { $0.uuid == CBUUIDs.statusUUID }
+//                    .receive(on: DispatchQueue.main)
+//                    .sink(
+//                        receiveCompletion: { completion in
+//                            print("[VitalWave] Status stream: \(completion)")
+//                        },
+//                        receiveValue: { characteristic in
+//                            do {
+//                                guard let data =
+//                                    try characteristic.parsedValue() as Data?
+//                                else {
+//                                    return
+//                                }
+//
+//                                let bytes = Array(data)
+//
+//                                guard bytes.count == 20 else {
+//                                    print(
+//                                        "[VitalWave] Unexpected status length:",
+//                                        bytes.count
+//                                    )
+//                                    return
+//                                }
+//
+//                                guard bytes[0] == 3 else {
+//                                    print(
+//                                        "[VitalWave] Unsupported protocol:",
+//                                        bytes[0]
+//                                    )
+//                                    return
+//                                }
+//
+//                                let state: String
+//                                switch bytes[1] {
+//                                case 0:
+//                                    state = "Idle"
+//                                case 1:
+//                                    state = "Recording"
+//                                case 2:
+//                                    state = "Fault"
+//                                default:
+//                                    state = "Unknown"
+//                                }
+//
+//                                print(
+//                                    "[VitalWave] Protocol 3 |",
+//                                    "State:", state,
+//                                    "| Reason:", bytes[2],
+//                                    "| Sensor mask:", bytes[3]
+//                                )
+//                            } catch {
+//                                print(
+//                                    "[VitalWave] Could not read status:",
+//                                    error
+//                                )
+//                            }
+//                        }
+//                    )
+//                    .store(in: &cancellables)
+//
+//                try await peripheral.setNotifyValue(
+//                    true,
+//                    forCharacteristicWithCBUUID: CBUUIDs.statusUUID,
+//                    ofServiceWithCBUUID: CBUUIDs.BLEService_UUID
+//                )
+//
+//                print("[VitalWave] Connected; status notifications enabled.")
+//                // Read the current status instead of waiting for a notification.
+//                let initialData: Data? = try await peripheral.readValue(
+//                    forCharacteristicWithCBUUID: CBUUIDs.statusUUID,
+//                    ofServiceWithCBUUID: CBUUIDs.BLEService_UUID
+//                )
+//
+//                if let data = initialData {
+//                    let status = try V0Status(data: data)
+//
+//                    print("[VitalWave] Protocol 3 confirmed")
+//                    print("[VitalWave] Watch state:", status.state)
+//                    print("[VitalWave] Session ID:", status.sessionID)
+//                    print("[VitalWave] Reason:", status.reason)
+//                } else {
+//                    print("[VitalWave] Watch returned no status data.")
+//                }
+//                print("[VitalWave] Recording has not been started.")
+//            } catch {
+//                print("[VitalWave] Connection setup failed:", error)
+//            }
+//        }
+//    }
+//}
+
 import Foundation
-import Combine
 @preconcurrency import AsyncBluetooth
 
 extension BLEModel {
-    private func writeDate(to peripheral: Peripheral) async throws {
-        let value = UInt32(Date().timeIntervalSince1970)
-        var u32LE = value.littleEndian // or simply value
-        let dataLE = Data(bytes: &u32LE, count: 4)
-        
-        try await peripheral.writeValue(
-            dataLE,
-            forCharacteristicWithCBUUID: CBUUIDs.BLE_Characteristic_uuid_Tx,
-            ofServiceWithCBUUID: CBUUIDs.BLEService_UUID
-        )
-        print("Wrote date to device")
-    }
-    
-    private func subscribeToCharacteristic(_ peripheral: Peripheral) async throws {
-        try await peripheral.setNotifyValue(
-            true,
-            forCharacteristicWithCBUUID: CBUUIDs.BLE_Characteristic_uuid_Rx,
-            ofServiceWithCBUUID: CBUUIDs.BLEService_UUID
-        )
-        
-        let dataBuffer = IncomingDataBuffer(deviceId: peripheral.identifier.uuidString)
-        
-        peripheral.characteristicValueUpdatedPublisher
-            .subscribe(on: DispatchQueue.global(qos: .userInitiated))
-            .filter { $0.uuid == CBUUIDs.BLE_Characteristic_uuid_Rx }
-            .map {
-                do {
-                    guard let data = try $0.parsedValue() as Data? else { return nil as IncomingWearablePacket? }
-                    let packet = try IncomingWearablePacket(from: data, for: peripheral.identifier.uuidString) //, packetCount: self.packetCount)
-                    // TODO: Verify all packets are being received in order in debug mode here
-                    return packet as IncomingWearablePacket?
-                } catch {
-                    print("Could not decode packet:", error)
-                    return nil as IncomingWearablePacket?
-                }
-            }
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { _ in }, receiveValue: { [weak self] (value: IncomingWearablePacket?) in
-                guard let self = self, let packet = value else { return }
-                let _ = dataBuffer.append(packet)
-                for (timestampStr, sample) in packet.samples.sorted(by: { $0.key < $1.key } ) {
-                    print("[SENT SAMPLE] at \(timestampStr)")
-                    guard let timestamp = Date.fromISOMillisString(timestampStr) else { continue }
-                    self.samplePublisher.send((peripheral.identifier.uuidString, timestamp, sample))
-                    
-                }
-                print("Found packet!")
-            })
-            .store(in: &cancellables)
-    }
-    
-    
     internal func onPeripheralConnect(_ peripheral: Peripheral) {
-        Task {
-            do {
-                try await writeDate(to: peripheral)
-            } catch {
-                print("Could not send date: \(error)")
-            }
-            
-            do {
-                try await subscribeToCharacteristic(peripheral)
-            } catch {
-                print("Could not subscribe to characteristic: \(error)")
-            }
-            
-            
+        let id = peripheral.identifier.uuidString
+        // Replacing a connection always cancels the previous listener and tasks.
+        v0Sessions[id]?.disconnect()
+        let session = V0Session(peripheral: peripheral)
+        session.onSample = { [weak self] timestamp, sample in
+            self?.samplePublisher.send((id, timestamp, sample))
         }
+        v0Sessions[id] = session
+        session.connect()
+    }
+
+    internal func onV0Disconnect(_ id: String) {
+        v0Sessions[id]?.disconnect()
+    }
+
+    internal func disconnectAllV0Sessions() {
+        for session in v0Sessions.values { session.disconnect() }
     }
 }
