@@ -1,0 +1,11 @@
+{% extends 'recording_base.html' %}
+{% block title %}Visualize Data{% endblock %}
+{% block content %}
+<div class="heading"><h1>Visualize Data</h1><button id="reset" hidden>Reset zoom</button></div>
+<section class="panel panel-body"><label class="button primary" for="csv">Choose CSV</label><input id="csv" type="file" accept=".csv,text/csv" style="position:absolute;width:1px;height:1px;opacity:0"><span id="filename" style="margin-left:16px;overflow-wrap:anywhere">No file selected</span><p class="muted" style="margin-bottom:0;font-size:13px">Opened locally · Not uploaded</p><p id="status" role="status" hidden></p></section>
+<div id="summary" class="stats" hidden></div>
+<div id="charts"></div>
+<style>.plot{width:100%;height:340px}.plot-panel h2{margin:0}.plot-top{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;padding:20px 24px}.channels{display:flex;gap:14px;flex-wrap:wrap}.channels label{font-size:13px;display:flex;align-items:center;gap:6px}.channels input{accent-color:#2563eb}#csv:focus-visible+span{outline:2px solid #2563eb}#status{color:#9b303d}</style>
+<script src="{{ url_for('static', filename='plotly.min.js') }}"></script>
+<script src="{{ url_for('static', filename='waveforms.js') }}" defer></script>
+{% endblock %}

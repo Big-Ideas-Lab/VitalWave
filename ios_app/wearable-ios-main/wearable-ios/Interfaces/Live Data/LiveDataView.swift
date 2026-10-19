@@ -3,6 +3,7 @@
 //  wearable-ios
 //
 //  Created by Luke Redmore on 12/6/23.
+//  Updated by Jade Chng on 10/08/2026
 //
 
 import SwiftUI
@@ -13,20 +14,24 @@ struct LiveDataView: View {
     
     var body: some View {
         NavigationStack{
-            if bleModel.connectedPeripherals.isEmpty {
-                Text("Connect to a device to view realtime data here")
-                    .padding()
-                    .multilineTextAlignment(.center)
-                    .navigationTitle("Live Data")
-            } else {
-                List {
+            List {
+                if bleModel.connectedPeripherals.isEmpty {
+                    Text("Connect to a device to view realtime data here")
+                        .foregroundStyle(.secondary)
+                } else {
                     ForEach(bleModel.pairedPeripheralManager.peripherals, id:\.id) { periph in
                         if (bleModel.connectedPeripherals.contains(where: { $0.identifier.uuidString == periph.id })) {
+                            if let session = bleModel.v0Sessions[periph.id] {
+                                V0RecordingSection(session: session)
+                            }
                             LiveDataViewSingle(peripheral: periph)
                         }
                     }
-                }.navigationTitle("Live Data")
-            }
+                }
+                Section {
+                    NavigationLink("Saved recordings") { LocalRecordingsView() }
+                }
+            }.navigationTitle("Live Data")
         }
     }
 }

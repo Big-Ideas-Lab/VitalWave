@@ -2,135 +2,135 @@
 //  AuthViewModel.swift
 //  wearable-ios
 //  Created by Carola Maglione on 10/9/23.
+//  Updated by Jade Chng 10/6/2023
 
 
 import SwiftUI
 @preconcurrency import FirebaseAuth
-import os
-import Combine
 
-enum AuthenticationState {
-    case unauthenticated
-    case authenticating
-    case authenticated
-}
+enum AuthenticationState { case unauthenticated, authenticating, authenticated }
+enum AuthenticationFlow { case login, signup }
 
-enum AuthenticationFlow {
-    case login
-}
-
-/** The ObservableObject handling all data about the current user's authentication state.  */
 @MainActor
 final class AuthViewModel: ObservableObject {
-    @Published var email: String = ""
-    @Published var password: String = ""
-    @Published var confirmPassword: String = ""
-    
+    @Published var email = ""
+    @Published var password = ""
+    @Published var confirmPassword = "" // Compatibility with older views.
+    @Published var displayName = ""
     @Published var flow: AuthenticationFlow = .login
-    
-    @Published var isValid: Bool = false
-    
     @Published var authenticationState: AuthenticationState = .authenticating
     @Published var user: User?
-    @Published var errorMessage: String = ""
-    @Published var displayName: String = ""
-    @Published var logger: Logger
-    
-    var cancellables = Set<AnyCancellable>()
-    
-    init() {
-        logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "ble-default")
-        logger.info("Connected to foreground!!")
-        
-        
-        $flow
-            .combineLatest($email, $password, $confirmPassword)
-            .map { flow, email, password, confirmPassword in
-                flow == .login
-                ? !(email.isEmpty || password.isEmpty)
-                : !(email.isEmpty || password.isEmpty || confirmPassword.isEmpty)
-            }
-            .sink(receiveValue: { isValid in
-                self.isValid = isValid
-            })
-            .store(in: &cancellables)
-        
-        
+    @Published var errorMessage = ""
+    @Published var isBusy = false
+    @Published var needsProfile = false
+    @Published var initialTab = "Home"
+    private var listener: AuthStateDidChangeListenerHandle?
+
+    var isValid: Bool {
+        !email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
+        !password.isEmpty &&
+        (flow == .login || !displayName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
     }
-    
-//    private var authStateHandler: AuthStateDidChangeListenerHandle?
-//    
-//    private func registerAuthStateHandler() {
-//        if authStateHandler == nil {
-//            authStateHandler = Auth.auth().addStateDidChangeListener { [weak self] auth, user in
-//                self?.user = user
-//                self?.authenticationState = user == nil ? .unauthenticated : .authenticated
-//                self?.displayName = user?.email ?? ""
-//            }
-//        }
-//    }
-    
-    private func reset() {
-        flow = .login
-        email = ""
-        password = ""
-        confirmPassword = ""
-        UserDefaults.standard.set(nil, forKey: "auth-uid")
-        UserDefaults.standard.removeObject(forKey: "pairedPeripherals")
-        UserDefaults.standard.removeObject(forKey: "paired-peripherals")
-        UserDefaults.standard.removeObject(forKey: "cookies")
-    }
-    
-    /** Observe the user's authentication state and update when it changes */
+
     func listenToAuthState() {
-        Auth.auth().addStateDidChangeListener { [weak self] _, user in
-            print("[AuthViewModel] Auth state changed")
-            guard let self = self else { return }
-            if let uid = user?.uid {
-                print("[AuthViewModel] User \(uid) signed in, setting UID")
-                UserDefaults.standard.set(uid, forKey: "auth-uid")
+        guard listener == nil else { return }
+        listener = Auth.auth().addStateDidChangeListener { [weak self] _, _ in
+            Task { @MainActor [weak self] in
+                guard let self, !self.isBusy else { return }
+                self.synchronize()
             }
-            self.user = user
-            self.displayName = user?.email ?? ""
-            self.authenticationState = user == nil ? .unauthenticated : .authenticated
-            
         }
     }
-    
-    /** Currently unused, should use signInWithToken instead */
+
+    private func synchronize() {
+        let current = Auth.auth().currentUser
+        user = current
+        if let current {
+            UserDefaults.standard.set(current.uid, forKey: "auth-uid")
+            let name = current.displayName?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+            needsProfile = name.isEmpty
+            if !name.isEmpty { displayName = name }
+            authenticationState = .authenticated
+        } else {
+            UserDefaults.standard.removeObject(forKey: "auth-uid")
+            needsProfile = false
+            authenticationState = .unauthenticated
+        }
+    }
+
     func signInWithEmailPassword() async -> Bool {
-        authenticationState = .authenticating
+        guard !isBusy, isValid else { return false }
+        isBusy = true
+        errorMessage = ""
+        defer { password = ""; isBusy = false; synchronize() }
         do {
-            try await Auth.auth().signIn(withEmail: email, password: password)
+            _ = try await Auth.auth().signIn(
+                withEmail: email.trimmingCharacters(in: .whitespacesAndNewlines), password: password)
+            initialTab = "Home"
             return true
         } catch {
-            print(error)
             errorMessage = error.localizedDescription
-            authenticationState = .unauthenticated
             return false
-            
         }
     }
-    
-    /** Intsead of signing in with an email and password, we can sign in with a token returned from the cloud function getAuthToken() */
-    func signInWithToken(token: String) async {
-        authenticationState = .authenticating
+
+    func createAccount() async {
+        guard !isBusy, isValid else { return }
+        isBusy = true
+        errorMessage = ""
+        let name = displayName.trimmingCharacters(in: .whitespacesAndNewlines)
+        defer { password = ""; isBusy = false; synchronize() }
         do {
-            try await Auth.auth().signIn(withCustomToken: token)
+            let result = try await Auth.auth().createUser(
+                withEmail: email.trimmingCharacters(in: .whitespacesAndNewlines), password: password)
+            initialTab = "Devices"
+            // Account creation signs in immediately. Hold the UI until the name is saved.
+            do {
+                let change = result.user.createProfileChangeRequest()
+                change.displayName = name
+                try await change.commitChanges()
+            } catch {
+                // The account exists: offer profile retry, not another account creation.
+                errorMessage = "Your account was created, but your name could not be saved. Please try saving it again. \(error.localizedDescription)"
+            }
         } catch {
-            print("signInWithTokenError:",  error.localizedDescription.debugDescription)
             errorMessage = error.localizedDescription
-            authenticationState = .unauthenticated
         }
     }
-    
-    /** Signs out the current user. Also unpairs any paired peripherals*/
+
+    func completeProfile() async {
+        let name = displayName.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !isBusy, !name.isEmpty, let current = Auth.auth().currentUser else { return }
+        isBusy = true
+        errorMessage = ""
+        defer { isBusy = false; synchronize() }
+        do {
+            let change = current.createProfileChangeRequest()
+            change.displayName = name
+            try await change.commitChanges()
+            initialTab = "Devices"
+        } catch { errorMessage = error.localizedDescription }
+    }
+
+    func signInWithToken(token: String) async {
+        guard !isBusy else { return }
+        isBusy = true
+        errorMessage = ""
+        defer { isBusy = false; synchronize() }
+        do { _ = try await Auth.auth().signIn(withCustomToken: token) }
+        catch { errorMessage = error.localizedDescription }
+    }
+
     func signOut() {
+        guard !isBusy else { return }
         do {
             try Auth.auth().signOut()
-            reset()
-        } catch let signOutError as NSError {
-            print("Error signing out: %@", signOutError)
-        }
+            for key in ["auth-uid", "pairedPeripherals", "paired-peripherals", "cookies"] {
+                UserDefaults.standard.removeObject(forKey: key)
+            }
+            email = ""; password = ""; confirmPassword = ""; displayName = ""
+            errorMessage = ""; flow = .login; initialTab = "Home"
+            synchronize()
+        } catch { errorMessage = error.localizedDescription }
     }
 }
