@@ -46,14 +46,17 @@ vitalwave/
 ---
 ## Setup guides
 
-Follow the guides in order. Each PDF includes step-by-step instructions and screenshots.
+Follow the guides in order. Each PDF includes step-by-step instructions.
 
 **Already have an assembled and programmed lab watch? Start with Guide 3.**
 
+Current firmware source and build instructions: [firmware/vitalwave_v0](firmware/vitalwave_v0/README.md).
+
+
 | Step | Guide | What it covers |
 |------|-------|----------------|
-| 1 | [Assemble the watch](docs/01-watch-assembly.pdf) | Required components, assembly, and hardware checks. |
-| 2 | [Install the firmware](docs/02-firmware-setup.pdf) | Programming the watch and checking that it starts correctly. |
+| 1 | [Install the firmware](docs/01-firmware-setup.pdf) | Programming the PCB and checking that it starts correctly before final watch assembly. |
+| 2 | [Assemble the watch](docs/02-watch-assembly.pdf) | Required components, installing the programmed PCB, and final assembly checks. |
 | 3 | [Set up Firebase](docs/03-firebase-setup.pdf) | Configuring your own project. |
 | 4 | [Install the iOS app](docs/04-ios-setup.pdf) | Building and installing the app through Xcode using a free Apple account. |
 | 5 | [Launch the web app](docs/05-web-app-setup.pdf) | Installing dependencies, configuring Firebase access, and starting the dashboard. |
