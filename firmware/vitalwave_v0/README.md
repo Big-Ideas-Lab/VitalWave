@@ -1,4 +1,4 @@
-# VitalWave-v0 firmware (protocol 3)
+# VitalWave-v0 firmware
 
 Current nRF52840 firmware for the VitalWave recording app. Supports BLE session
 control, accelerometer/gyroscope, temperature/humidity, four-colour PPG, button
