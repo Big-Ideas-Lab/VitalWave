@@ -3,6 +3,7 @@
 //  wearable-ios
 //
 //  Created by Luke Redmore on 3/23/24.
+//  Updated by Jade Chng on 10/06/2026
 //
 
 import SwiftUI
@@ -28,8 +29,6 @@ struct LiveDataViewSingle: View {
             } label : {
                 Text("Heart Rate")
             }
-            LiveDataRow(label: "BATTERY", numDecimals: 1, for: \.battery)
-            LiveDataRow(label: "WAYPOINTS", numDecimals: 1, for: \.waypoints)
             LiveDataRow(label: "PPG_R", numDecimals: 1, for: \.ppg_r)
             LiveDataRow(label: "PPG_G", numDecimals: 1, for: \.ppg_g)
             LiveDataRow(label: "PPG_B", numDecimals: 1, for: \.ppg_b)
@@ -44,11 +43,9 @@ struct LiveDataViewSingle: View {
             LiveDataRow(label: "MAG_Y", numDecimals: 1, for: \.mag_y)
             LiveDataRow(label: "MAG_Z", numDecimals: 1, for: \.mag_z)
             LiveDataRow(label: "AIR_TEMP", numDecimals: 2, for: \.air_temp)
-            LiveDataRow(label: "THERMISTOR", numDecimals: 1, for: \.thermistor)
-            LiveDataRow(label: "PRESS", numDecimals: 6, for: \.press)
             LiveDataRow(label: "HUMID", numDecimals: 2, for: \.humid)
         } header: {
-            Text(peripheral.name)
+            Text("Metrics")
         }
     }
 }

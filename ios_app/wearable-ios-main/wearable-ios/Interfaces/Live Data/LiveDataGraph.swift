@@ -3,6 +3,7 @@
 //  wearable-ios
 //
 //  Created by Luke Redmore on 3/23/24.
+//  Updated by Jade Chng on 10/06/2026
 //
 
 import SwiftUI
@@ -49,7 +50,7 @@ struct LiveDataGraph<T: WearableDataType>: View {
               let first = allData.first?.timestamp,
               let last = allData.last?.timestamp else { return 0.0 }
         let delta = first.distance(to: last)
-        return Double(allData.count) / Double(delta)
+        return delta > 0 ? Double(allData.count - 1) / delta : 0
     }
     
     var body: some View {
@@ -80,6 +81,10 @@ struct LiveDataGraph<T: WearableDataType>: View {
             didGoBackInTime = timestamp < mostRecentTimestamp
             mostRecentTimestamp = timestamp
             allData.append((timestamp: timestamp, data: parsed))
+            // Bound display memory while streaming continues.
+            let cutoff = timestamp.addingTimeInterval(-30)
+            allData.removeAll { $0.timestamp < cutoff }
+            if allData.count > 6000 { allData.removeFirst(allData.count - 6000) }
         }
         .onDisappear {
             allData = []

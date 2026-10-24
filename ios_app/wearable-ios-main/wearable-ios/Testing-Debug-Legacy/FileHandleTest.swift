@@ -16,8 +16,10 @@ struct FileHandleTest: View {
     
     init(deviceId: String, text: String = "") {
         self.deviceId = deviceId
-        self.text = text
-        self.pub = NotificationCenter.default.publisher(for: Notification.Name("Unsused"))
+        self.pub = NotificationCenter.default.publisher(
+            for: Notification.Name("Unsused")
+        )
+        self._text = State(initialValue: text)
     }
     
     @State private var text = ""

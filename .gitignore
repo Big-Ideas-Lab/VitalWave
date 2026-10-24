@@ -1,0 +1,13 @@
+# macOS files
+.DS_Store
+
+# Python environments
+.venv/
+.venv311/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Private Firebase credentials
+**/*firebase-adminsdk*.json
